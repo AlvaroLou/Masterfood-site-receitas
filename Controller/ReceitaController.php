@@ -31,4 +31,12 @@ class ReceitaController
       return null;
     }
   }
+  public function Alterar(Receita $receita)
+  {
+    if (trim(strlen($receita->getTitulo()) > 0) && trim(strlen($receita->getIngredientes()) > 0) && trim(strlen($receita->getModoPreparo()) > 0)) {
+      return $this->receitaDAO->Alterar($receita);
+    } else {
+      return false;
+    }
+  }
 }

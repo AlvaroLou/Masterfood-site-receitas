@@ -80,6 +80,26 @@ class ReceitaDAO
       $receita->setData($retornoBanco["data"]);
 
       return $receita;
+    } catch (PDOException $ex) {
+      if ($this->debug) {
+        echo "Erro: {$ex->getMessage()}";
+      }
+    }
+  }
+
+  public function Alterar(Receita $receita)
+  {
+    try {
+      $sql = "UPDATE receita SET titulo = :titulo, ingredientes = :ingredientes, modopreparo = :preparo WHERE cod = :cod";
+
+      $param = array(
+        ":titulo" => $receita->getTitulo(),
+        ":ingredientes" => $receita->getIngredientes(),
+        ":preparo" => $receita->getModoPreparo(),
+        ":cod" => $receita->getCod()
+      );
+
+      return $this->banco->ExecuteNonQuery($sql, $param);
 
     } catch (PDOException $ex) {
       if ($this->debug) {

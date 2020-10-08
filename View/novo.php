@@ -1,67 +1,69 @@
 <?php
-  require_once("Controller/ReceitaController.php");
-  require_once("Model/Receita.php");
+require_once("Controller/ReceitaController.php");
+require_once("Model/Receita.php");
 
-  $receitaController = new ReceitaController();
-  $receita = new Receita();
+$receitaController = new ReceitaController();
+$receita = new Receita();
 
-  $titulo = "";
-  $ingredientes = "";
-  $modopreparo = "";
-  $resultado = "";
+$titulo = "";
+$ingredientes = "";
+$modopreparo = "";
+$resultado = "";
 
-  $cod = filter_input(INPUT_GET, "cod");
-  if ($cod) {
-    $itemReceita = $receitaController->RetornaReceita($cod);
-
-    $titulo = $itemReceita->getTitulo();
-    $ingredientes = $itemReceita->getIngredientes();
-    $modopreparo = $itemReceita->getModoPreparo();
-  }
-
-  $btnGravar = filter_input(INPUT_POST, "btnGravar");
-  if ($btnGravar) {
-    if (!$cod) {
-      //Novo
-      $receita->setTitulo(filter_input(INPUT_POST,"txtTitulo"));
-      $receita->setIngredientes(filter_input(INPUT_POST,"txtIngredientes"));
-      $receita->setModoPreparo(filter_input(INPUT_POST,"txtPreparo"));
-      $receita->setData(date("Y/m/d"));
-
-      if ($receitaController->Cadastrar($receita)) {
-        $resultado = "Receita Cadastrada";
-      } else {
-        $resultado = "Houve um erro ao tentar cadastrar a receita";
-      }
-      
-    }else{
-      //Editando
-      $receita->setCod($cod);
+$cod = filter_input(INPUT_GET, "cod");
+$btnGravar = filter_input(INPUT_POST, "btnGravar");
+if ($btnGravar) {
+  $receita->setTitulo(filter_input(INPUT_POST, "txtTitulo"));
+  $receita->setIngredientes(filter_input(INPUT_POST, "txtIngredientes"));
+  $receita->setModoPreparo(filter_input(INPUT_POST, "txtPreparo"));
+  $receita->setData(date("Y/m/d"));
+  if (!$cod) {
+    //Novo
+    if ($receitaController->Cadastrar($receita)) {
+      $resultado = "Receita Cadastrada";
+    } else {
+      $resultado = "Houve um erro ao tentar cadastrar a receita";
+    }
+  } else {
+    //Editando
+    $receita->setCod($cod);
+    if ($receitaController->Alterar($receita)) {
+      $resultado = "Receita Alterada";
+    } else {
+      $resultado = "Houve um erro ao tentar alterar a receita";
     }
   }
+}
+if ($cod) {
+  $itemReceita = $receitaController->RetornaReceita($cod);
+
+  $titulo = $itemReceita->getTitulo();
+  $ingredientes = $itemReceita->getIngredientes();
+  $modopreparo = $itemReceita->getModoPreparo();
+}
 ?>
-<div id="dvNovo"> 
+<div id="dvNovo">
   <h3>Nova Receita</h3>
   <div class="row">
     <form method="post" action="">
 
       <div class="input-field col s12">
-        <input id="txtTitulo" name="txtTitulo" type="text" class="validate" value="<?=$titulo;?>" />
+        <input id="txtTitulo" name="txtTitulo" type="text" class="validate" value="<?= $titulo; ?>" />
         <label for="txtTitulo">Título</label>
       </div>
 
       <div class="input-field col s12">
-        <textarea id="txtIngredientes" name="txtIngredientes" class="materialize-textarea" ><?=$ingredientes;?></textarea>
+        <textarea id="txtIngredientes" name="txtIngredientes" class="materialize-textarea"><?= $ingredientes; ?></textarea>
         <label for="txtIngredientes">Ingredientes</label>
       </div>
 
       <div class="input-field col s12">
-        <textarea id="txtPreparo" name="txtPreparo" class="materialize-textarea" ><?=$modopreparo;?></textarea>
+        <textarea id="txtPreparo" name="txtPreparo" class="materialize-textarea"><?= $modopreparo; ?></textarea>
         <label for="txtPreparo">Modo de Preparo</label>
       </div>
 
       <div class="col s12">
-        <span><?=$resultado;?>&nbsp;</span>
+        <span><?= $resultado; ?>&nbsp;</span>
       </div>
 
       <div class="col s12">
