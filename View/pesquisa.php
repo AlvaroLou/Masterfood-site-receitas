@@ -3,6 +3,9 @@ require_once("Controller\ReceitaController.php");
 
 $receitaController = new ReceitaController();
 
+if (filter_input(INPUT_GET, "cod")) {
+  $receitaController->Deletar((filter_input(INPUT_GET, "cod")));
+}
 $listaReceita = $receitaController->RetornaTudo();
 ?>
 
@@ -29,8 +32,9 @@ $listaReceita = $receitaController->RetornaTudo();
             <td><?= $receita->getTitulo(); ?></td>
             <td><?= date("d-m-Y", strtotime($receita->getData())); ?></td>
             <td>
-              <a href="?pagina=novo&cod=<?= $receita->getCod(); ?>" class="weaves-effect red accent-2 btn">Editar</a>
+              <a href="?pagina=novo&cod=<?= $receita->getCod(); ?>" class="weaves-effect yellow accent-1 accent-3 btn">Editar</a>
               <a href="?pagina=ver&cod=<?= $receita->getCod(); ?>" class="weaves-effect blue darken-1 accent-3 btn">Ver</a>
+              <a onclick="return confirm('Deseja realmente remover a receita?');" href="?pagina=pesquisa&cod=<?= $receita->getCod(); ?>" class="weaves-effect red accent-1 accent-3 btn">Remover</a>
             </td>
           </tr>
         <?php

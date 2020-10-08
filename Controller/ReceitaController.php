@@ -39,4 +39,12 @@ class ReceitaController
       return false;
     }
   }
+  public function Deletar($cod)
+  {
+    if ($cod > 0) {
+      return $this->receitaDAO->Deletar($cod);
+    } else {
+      return false;
+    }
+  }
 }

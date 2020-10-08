@@ -100,7 +100,23 @@ class ReceitaDAO
       );
 
       return $this->banco->ExecuteNonQuery($sql, $param);
+    } catch (PDOException $ex) {
+      if ($this->debug) {
+        echo "Erro: {$ex->getMessage()}";
+      }
+    }
+  }
+  public function Deletar($cod)
+  {
+    try {
+      $sql = "DELETE FROM receita WHERE cod = :cod";
 
+      $param = array(
+        ":cod" => $cod
+      );
+
+      return $this->banco->ExecuteNonQuery($sql, $param);
+      
     } catch (PDOException $ex) {
       if ($this->debug) {
         echo "Erro: {$ex->getMessage()}";
