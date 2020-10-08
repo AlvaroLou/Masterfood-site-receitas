@@ -1,0 +1,10 @@
+#dvCentro{
+  max-width: 800px;
+  width: 100%;
+}
+.text{
+  font-weight: bold;
+}
+.break{
+  margin-bottom: 10px;
+}
